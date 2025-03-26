@@ -1,0 +1,177 @@
+/**
+ * @file
+ * Estilos para el listado de usuarios y el formulario de búsqueda.
+ */
+
+/* Estilos para el contenedor principal */
+.usuarios-diego-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 15px;
+}
+
+/* Estilos para el formulario de búsqueda */
+.search-form-wrapper,
+.search-form-manual {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-item {
+  margin-bottom: 15px;
+}
+
+.search-form-wrapper label,
+.search-form-manual label,
+.usuario-search-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-text,
+.search-form-wrapper input[type="text"],
+.search-form-wrapper input[type="email"],
+.search-form-manual input[type="text"],
+.search-form-manual input[type="email"],
+.usuario-search-form input[type="text"],
+.usuario-search-form input[type="email"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-submit,
+.search-form-wrapper .form-submit,
+.search-form-manual .form-submit,
+.usuario-search-form .form-submit {
+  background-color: #0071b8;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.form-submit:hover,
+.search-form-wrapper .form-submit:hover,
+.search-form-manual .form-submit:hover,
+.usuario-search-form .form-submit:hover {
+  background-color: #005b95;
+}
+
+/* Estilos para el contenedor de la tabla */
+.user-list-table-container {
+  margin-top: 20px;
+}
+
+/* Estilos para la tabla de usuarios */
+.usuario-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.usuario-table-header {
+  background-color: #f8f9fa;
+  padding: 12px;
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 2px solid #dee2e6;
+  color: #495057;
+}
+
+.usuario-table td {
+  padding: 12px;
+  border-bottom: 1px solid #dee2e6;
+  color: #212529;
+}
+
+.usuario-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.usuario-table .empty {
+  text-align: center;
+  padding: 20px;
+  color: #6c757d;
+}
+
+/* Estilos para el paginador */
+.pager-container {
+  margin-top: 20px;
+  text-align: center;
+  padding: 10px 0;
+  clear: both;
+}
+
+/* Asegurar que el paginador sea visible */
+.pager {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 5px;
+}
+
+.pager__items {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pager__item {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.pager__item a {
+  display: inline-block;
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  color: #0071b8;
+  text-decoration: none;
+  transition: all 0.3s;
+  min-width: 40px;
+  text-align: center;
+}
+
+.pager__item a:hover {
+  background-color: #e9ecef;
+  border-color: #0071b8;
+}
+
+.pager__item.is-active a {
+  background-color: #0071b8;
+  color: white;
+  border-color: #0071b8;
+}
+
+/* Estilos para los botones de navegación */
+.pager__item--first,
+.pager__item--previous,
+.pager__item--next,
+.pager__item--last {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.pager__item--ellipsis {
+  display: inline-block;
+  margin: 0 5px;
+  padding: 8px 12px;
+} 

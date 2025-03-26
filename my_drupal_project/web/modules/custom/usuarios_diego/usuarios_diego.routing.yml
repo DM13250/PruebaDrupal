@@ -1,0 +1,15 @@
+usuarios_diego.list:
+  path: '/usuarios-list'
+  defaults:
+    _controller: '\Drupal\usuarios_diego\Controller\UserListController::renderList'
+    _title: 'Listado de Usuarios'
+  requirements:
+    _permission: 'access content'
+    
+usuarios_diego.search_form:
+  path: '/usuarios-list/search'
+  defaults:
+    _form: '\Drupal\usuarios_diego\Form\UserSearchForm'
+    _title: 'Búsqueda de Usuarios'
+  requirements:
+    _permission: 'access content'

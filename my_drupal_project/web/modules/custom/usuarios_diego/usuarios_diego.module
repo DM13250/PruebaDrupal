@@ -1,0 +1,168 @@
+<?php
+
+/**
+ * @file
+ * Contiene hooks para el modulo usuarios_diego.
+ * 
+ * IMPORTANTE: Este archivo es esencial para el funcionamiento del modulo.
+ * Contiene los hooks que permiten que Drupal reconozca y utilice nuestras
+ * plantillas y modifique elementos del sistema como el paginador.
+ * NO ELIMINAR ESTE ARCHIVO.
+ */
+
+/**
+ * Implements hook_theme().
+ * 
+ * Esta funcion es NECESARIA para definir las plantillas de tema.
+ * Sin esta funcion, Drupal no sabria como renderizar nuestro listado
+ * y no encontraria la plantilla usuarios-diego-list.html.twig.
+ * 
+ * Define las variables que estaran disponibles en la plantilla:
+ * - header: Encabezados de la tabla
+ * - rows: Filas de datos
+ * - empty: Mensaje cuando no hay resultados
+ * - attributes: Atributos HTML de la tabla
+ * - pager: El paginador
+ * - search_form: El formulario de búsqueda
+ * - search_name: Nombre de búsqueda
+ * - search_surname: Apellido de búsqueda
+ * - search_email: Email de búsqueda
+ * - current_page: Número de página actual
+ * - total_pages: Número total de páginas
+ */
+function usuarios_diego_theme() {
+  return [
+    'usuarios_diego_list' => [
+      'variables' => [
+        'header' => NULL,
+        'rows' => NULL,
+        'empty' => NULL,
+        'attributes' => [],
+        'pager' => NULL,
+        'search_form' => NULL,
+        'search_name' => '',
+        'search_surname' => '',
+        'search_email' => '',
+        'current_page' => 0,
+        'total_pages' => 1,
+      ],
+      'template' => 'usuarios-diego-list',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_pager().
+ * 
+ * Esta funcion es CRUCIAL para la funcionalidad AJAX del paginador.
+ */
+function usuarios_diego_preprocess_pager(&$variables) {
+  // Añadir la clase para que el JavaScript AJAX pueda encontrarlo
+  if (!isset($variables['attributes']['class'])) {
+    $variables['attributes']['class'] = [];
+  }
+  $variables['attributes']['class'][] = 'ajax-pager';
+  
+  // Agregar atributos adicionales para debugging
+  if (!isset($variables['attributes']['id'])) {
+    $variables['attributes']['id'] = 'usuarios-diego-pager';
+  }
+  
+  // Asegurar que todos los elementos tengan URLs válidas y atributos data
+  if (!empty($variables['items'])) {
+    $current_path = \Drupal::service('path.current')->getPath();
+    
+    // Encontrar la página actual
+    $current_page = \Drupal::service('pager.manager')->getPager() ? 
+                    \Drupal::service('pager.manager')->getPager()->getCurrentPage() : 0;
+    
+    // Verificar y procesar los items especiales (first, prev, next, last)
+    foreach (['first', 'previous', 'next', 'last'] as $type) {
+      if (isset($variables['items'][$type])) {
+        $item = &$variables['items'][$type];
+        
+        // Calcular el número de página basado en el tipo
+        $page = 0;
+        if ($type == 'next') {
+          $page = $current_page + 1;
+        } 
+        elseif ($type == 'previous') {
+          $page = max(0, $current_page - 1);
+        }
+        elseif ($type == 'last') {
+          // Estimar la última página basado en items totales/por página
+          $pager = \Drupal::service('pager.manager')->getPager();
+          $total = $pager ? $pager->getTotalItems() : 0;
+          $per_page = $pager ? $pager->getLimit() : 10;
+          $page = max(0, floor(($total - 1) / $per_page));
+        }
+        
+        // Asegurar que tiene una URL
+        if (empty($item['href'])) {
+          $item['href'] = $current_path . '?page=' . $page;
+        }
+        
+        // Agregar atributos de datos para ayudar al JavaScript
+        if (!isset($item['attributes'])) {
+          $item['attributes'] = [];
+        }
+        $item['attributes']['data-page'] = $page;
+        $item['attributes']['data-pager-type'] = $type;
+      }
+    }
+    
+    // Procesar los elementos de páginas
+    if (!empty($variables['items']['pages'])) {
+      foreach ($variables['items']['pages'] as $key => &$page_item) {
+        // Asegurar que tiene una URL
+        if (empty($page_item['href'])) {
+          $page_item['href'] = $current_path . '?page=' . $key;
+        }
+        
+        // Agregar atributos de datos para ayudar al JavaScript
+        if (!isset($page_item['attributes'])) {
+          $page_item['attributes'] = [];
+        }
+        $page_item['attributes']['data-page'] = $key;
+      }
+    }
+  }
+  
+  // Depuración - Verificar que se está generando el paginador correctamente
+  if (empty($variables['items'])) {
+    \Drupal::logger('usuarios_diego')->notice('No hay elementos en el paginador');
+  } 
+  else {
+    $pages_count = isset($variables['items']['pages']) ? count($variables['items']['pages']) : 0;
+    \Drupal::logger('usuarios_diego')->notice('Paginador generado con @num páginas de items y @special items especiales', 
+      [
+        '@num' => $pages_count,
+        '@special' => count($variables['items']) - ($pages_count ? 1 : 0),
+      ]);
+  }
+}
+
+/**
+ * Implements hook_preprocess_usuarios_diego_list().
+ */
+function usuarios_diego_preprocess_usuarios_diego_list(&$variables) {
+  // Registrar solo los nombres de las variables, no sus contenidos
+  \Drupal::logger('usuarios_diego')->notice('Variables disponibles en la plantilla: @vars', 
+    ['@vars' => implode(', ', array_keys($variables))]);
+  
+  // Verificar si search_form está presente sin registrar su contenido
+  if (!isset($variables['search_form'])) {
+    \Drupal::logger('usuarios_diego')->error('El formulario de búsqueda no está presente en las variables de la plantilla');
+  }
+}
+
+/**
+ * FIN DEL ARCHIVO usuarios_diego.module
+ * 
+ * Este archivo contiene solo dos hooks esenciales:
+ * 1. usuarios_diego_theme() - Define las plantillas de tema
+ * 2. usuarios_diego_preprocess_pager() - Modifica el paginador para AJAX
+ * 
+ * ADVERTENCIA: Mantén este archivo intacto para que la paginación AJAX 
+ * y la presentación del listado funcionen correctamente. 
+ */ 

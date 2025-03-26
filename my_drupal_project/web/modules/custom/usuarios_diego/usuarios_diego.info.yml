@@ -1,0 +1,7 @@
+name: 'Usuarios Diego'
+type: module
+description: 'Módulo que muestra un listado paginado y filtrado de usuarios.'
+core_version_requirement: ^9 || ^10
+package: Custom
+dependencies:
+  - drupal:core

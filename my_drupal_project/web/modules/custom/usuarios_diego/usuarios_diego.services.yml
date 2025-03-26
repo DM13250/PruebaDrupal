@@ -1,0 +1,4 @@
+services:
+  usuarios_diego.user_list_controller:
+    class: Drupal\usuarios_diego\Controller\UserListController
+    arguments: ['@form_builder', '@pager.manager'] 

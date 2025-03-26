@@ -1,0 +1,12 @@
+usuario_list:
+  version: 1.x
+  css:
+    theme:
+      css/usuario-list.css: {}
+  js:
+    js/ajax-pager.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/drupalSettings 

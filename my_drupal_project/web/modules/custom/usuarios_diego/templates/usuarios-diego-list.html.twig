@@ -1,0 +1,101 @@
+{#
+/**
+ * @file
+ * Template para el listado de usuarios.
+ *
+ * Disponible variables:
+ * - header: Los encabezados de la tabla.
+ * - rows: Las filas de datos de la tabla.
+ * - empty: Mensaje a mostrar cuando no hay resultados.
+ * - attributes: Atributos para la tabla.
+ * - pager: El paginador.
+ * - search_form: El formulario de búsqueda.
+ */
+#}
+<div id="usuarios-diego-container" class="usuarios-diego-container">
+  {# Todo el contenido está dentro del contenedor AJAX #}
+  
+  {# Formulario de búsqueda #}
+  <div class="search-form-wrapper">
+    {% if search_form %}
+      {{ search_form }}
+    {% else %}
+      <div class="search-form-manual">
+        <form action="{{ path('usuarios_diego.list') }}" method="get" id="user-search-form" class="usuario-search-form">
+          <div class="form-item">
+            <label for="edit-search-name">Nombre</label>
+            <input type="text" id="edit-search-name" name="search_name" class="form-text" value="{{ search_name }}" />
+          </div>
+          <div class="form-item">
+            <label for="edit-search-surname">Apellidos</label>
+            <input type="text" id="edit-search-surname" name="search_surname" class="form-text" value="{{ search_surname }}" />
+          </div>
+          <div class="form-item">
+            <label for="edit-search-email">Correo Electrónico</label>
+            <input type="text" id="edit-search-email" name="search_email" class="form-text" value="{{ search_email }}" />
+          </div>
+          <div class="form-actions">
+            <input type="submit" id="edit-submit" value="Buscar" class="form-submit" />
+          </div>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+
+  {# Listado de usuarios #}
+  <div class="user-list-table-container">
+    <table{{ attributes.addClass('usuario-table') }}>
+      <thead>
+        <tr>
+          {% for cell in header %}
+            <th{{ cell.attributes.addClass('usuario-table-header') }}>{{ cell.data }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% if rows %}
+          {% for row in rows %}
+            <tr>
+              {% for cell in row.data %}
+                <td>{{ cell }}</td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="{{ header|length }}" class="empty">{{ empty }}</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+    
+    {# Paginador #}
+    <div class="pager-container">
+      <h4 class="pager-heading">Página {{ current_page + 1 }} de {{ total_pages }}</h4>
+      
+      <nav class="pager" role="navigation" aria-labelledby="pagination-heading">
+        <h4 id="pagination-heading" class="visually-hidden">{{ 'Paginación'|t }}</h4>
+        
+        {# Renderizar el paginador estándar de Drupal #}
+        {% if pager %}
+          <div class="usuarios-diego-pager-wrapper">
+            {{ pager }}
+          </div>
+        {% endif %}
+      </nav>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Estilos básicos para la paginación */
+  .pager-container {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .pager-heading {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+</style> 
